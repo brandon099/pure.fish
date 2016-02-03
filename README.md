@@ -16,18 +16,18 @@ A [Pure][pure]-inspired prompt for [fish shell][fish]. It’s very similar to Pu
 
 ## Installation
 
-fish doesn’t have any kind of plugin system so you just have to [download the file](https://raw.githubusercontent.com/brandonweiss/pure.fish/master/fish_prompt.fish) and save it as `~/.config/fish/functions/fish_prompt.fish`.
+fish doesn’t have any kind of plugin system so you just have to [download the file](https://raw.githubusercontent.com/brandon099/pure.fish/master/fish_prompt.fish) and save it as `~/.config/fish/functions/fish_prompt.fish`.
 
 Here’s a one-liner you can run.
 
 ```shell
-curl https://raw.githubusercontent.com/brandonweiss/pure.fish/master/fish_prompt.fish > ~/.config/fish/functions/fish_prompt.fish
+curl https://raw.githubusercontent.com/brandon099/pure.fish/master/fish_prompt.fish > ~/.config/fish/functions/fish_prompt.fish
 ```
 
 To make it easier to update you can clone this repo and then symlink the prompt into place.
 
 ```shell
-git clone https://github.com/brandonweiss/pure.fish.git
+git clone https://github.com/brandon099/pure.fish.git
 ln -s ./pure.fish/fish_prompt.fish ~/.config/fish/functions/fish_prompt.fish
 ```
 
@@ -37,7 +37,7 @@ You can of course use any terminal theme you like, but I think it looks best wit
 
 ## Contributing
 
-1. Fork it ( http://github.com/brandonweiss/pure.fish/fork )
+1. Fork it ( http://github.com/brandon099/pure.fish/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am ‘Add some feature’`)
 4. Push to the branch (`git push origin my-new-feature`)
