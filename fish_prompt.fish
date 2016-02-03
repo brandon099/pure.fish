@@ -6,17 +6,6 @@ function _in_git_directory
   git rev-parse --git-dir > /dev/null 2>&1
 end
 
-function _git_branch_name_or_revision
-  set -l branch (git symbolic-ref HEAD ^ /dev/null | sed -e 's|^refs/heads/||')
-  set -l revision (git rev-parse HEAD ^ /dev/null | cut -b 1-7)
-
-  if test (count $branch) -gt 0
-    echo $branch
-  else
-    echo $revision
-  end
-end
-
 function _git_upstream_configured
   git rev-parse --abbrev-ref @"{u}" > /dev/null 2>&1
 end
@@ -56,7 +45,7 @@ end
 
 function _prompt_color_for_status
   if test $argv[1] -eq 0
-    echo magenta
+    echo normal
   else
     echo red
   end
@@ -68,7 +57,7 @@ function fish_prompt
   _print_in_color "\n"(_pwd_with_tilde) blue
 
   if _in_git_directory
-    _print_in_color " "(_git_branch_name_or_revision) 242
+    _print_in_color (__fish_git_prompt) cyan
     _print_in_color " "(_git_upstream_status) cyan
   end
 
