@@ -61,5 +61,10 @@ function fish_prompt
     _print_in_color " "(_git_upstream_status) cyan
   end
 
-  _print_in_color "\n❯ " (_prompt_color_for_status $last_status)
+  if set -q VIRTUAL_ENV
+      _print_in_color "\n("(basename "$VIRTUAL_ENV")")" normal
+      _print_in_color "❯ " (_prompt_color_for_status $last_status)
+  else
+      _print_in_color "\n❯ " (_prompt_color_for_status $last_status)
+  end
 end
