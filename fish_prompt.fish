@@ -2,6 +2,10 @@ function _pwd_with_tilde
   echo $PWD | sed 's|^'$HOME'\(.*\)$|~\1|'
 end
 
+function _prompt_hostname
+  hostname | cut -d . -f 1
+end
+
 function _in_git_directory
   git rev-parse --git-dir > /dev/null 2>&1
 end
@@ -59,6 +63,10 @@ function fish_prompt
   if _in_git_directory
     _print_in_color (__fish_git_prompt) cyan
     _print_in_color " "(_git_upstream_status) cyan
+  end
+
+  if [ $SSH_CONNECTION ]
+      _print_in_color " "(_prompt_hostname) 65737E
   end
 
   if set -q VIRTUAL_ENV
