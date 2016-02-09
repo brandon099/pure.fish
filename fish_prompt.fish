@@ -3,7 +3,7 @@ function _pwd_with_tilde
 end
 
 function _prompt_hostname
-  hostname | cut -d . -f 1
+  echo $USER"@"(hostname | cut -d . -f 1)
 end
 
 function _in_git_directory
