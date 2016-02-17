@@ -65,7 +65,7 @@ function fish_prompt
     _print_in_color " "(_git_upstream_status) cyan
   end
 
-  if [ $SSH_CONNECTION ]
+  if set -q SSH_CONNECTION
       _print_in_color " "(_prompt_hostname) 65737E
   end
 

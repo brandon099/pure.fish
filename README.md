@@ -11,7 +11,9 @@ A [Pure][pure]-inspired prompt for [fish shell][fish]. It’s very similar to Pu
 * Takes up two lines with a blank space preceding it. At first I thought this was weird but now I can’t imagine going back.
 * Shows the working directory
 * Shows the current git branch or revision
+* Shows if Git working tree is dirty
 * Shows up/down arrows if you have unpushed/unpulled commits
+* Shows username and hostname if SSH'd in to a server
 * The prompt character turns red if the last command’s exit status is 1
 
 ## Installation
