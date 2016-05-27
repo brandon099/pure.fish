@@ -94,16 +94,16 @@ function fish_prompt
     _print_in_color " "(_git_upstream_status) cyan
   end
 
-  # Show user@hostname if SSH'd in
-  if set -q SSH_CONNECTION
-    _print_in_color " "(_prompt_hostname) 65737E
-  end
-
   # Show process run time if longer than 5 seconds
   if set -q CMD_DURATION
     if test $CMD_DURATION -gt 5000
         _print_in_color " "(_format_time $CMD_DURATION) yellow
     end
+  end
+
+  # Show user@hostname if SSH'd in
+  if set -q SSH_CONNECTION
+    _print_in_color " "(_prompt_hostname) 65737E
   end
 
   # Show prompt, with Python Virtualenv support
