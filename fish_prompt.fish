@@ -1,3 +1,11 @@
+# Settings for Git Prompt
+set __fish_git_prompt_showdirtystate 'yes'
+set __fish_git_prompt_showupstream 'informative'
+set __fish_git_prompt_color_dirtystate yellow
+set __fish_git_prompt_char_upstream_ahead '↑'
+set __fish_git_prompt_char_upstream_behind '↓'
+#set __fish_git_prompt_char_upstream_diverged '↑↓'
+
 function _pwd_with_tilde
   echo $PWD | sed 's|^'$HOME'\(.*\)$|~\1|'
 end
@@ -38,34 +46,6 @@ function _in_git_directory
   git rev-parse --git-dir > /dev/null 2>&1
 end
 
-function _git_upstream_configured
-  git rev-parse --abbrev-ref @"{u}" > /dev/null 2>&1
-end
-
-function _git_behind_upstream
-  test (git rev-list --right-only --count HEAD...@"{u}" ^ /dev/null) -gt 0
-end
-
-function _git_ahead_of_upstream
-  test (git rev-list --left-only --count HEAD...@"{u}" ^ /dev/null) -gt 0
-end
-
-function _git_upstream_status
-  set -l arrows
-
-  if _git_upstream_configured
-    if _git_behind_upstream
-      set arrows "$arrows⇣"
-    end
-
-    if _git_ahead_of_upstream
-      set arrows "$arrows⇡"
-    end
-  end
-
-  echo $arrows
-end
-
 function _print_in_color
   set -l string $argv[1]
   set -l color  $argv[2]
@@ -91,7 +71,11 @@ function fish_prompt
   # If in git repo, show info about repo
   if _in_git_directory
     _print_in_color (__fish_git_prompt) cyan
-    _print_in_color " "(_git_upstream_status) cyan
+  end
+
+  # Show user@hostname if SSH'd in
+  if set -q SSH_CONNECTION
+    _print_in_color " "(_prompt_hostname) 65737E
   end
 
   # Show process run time if longer than 5 seconds
@@ -99,11 +83,6 @@ function fish_prompt
     if test $CMD_DURATION -gt 5000
         _print_in_color " "(_format_time $CMD_DURATION) yellow
     end
-  end
-
-  # Show user@hostname if SSH'd in
-  if set -q SSH_CONNECTION
-    _print_in_color " "(_prompt_hostname) 65737E
   end
 
   # Show prompt, with Python Virtualenv support
