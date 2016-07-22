@@ -7,7 +7,7 @@ set __fish_git_prompt_char_upstream_behind '↓'
 #set __fish_git_prompt_char_upstream_diverged '↑↓'
 
 function _pwd_with_tilde
-  echo $PWD | sed 's|^'$HOME'\(.*\)$|~\1|'
+  echo (pwd | string replace $HOME '~')
 end
 
 function _prompt_hostname
