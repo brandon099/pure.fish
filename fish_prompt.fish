@@ -1,3 +1,6 @@
+# Source
+# https://github.com/brandon099/pure.fish
+
 # Settings for Git Prompt
 set __fish_git_prompt_showdirtystate 'yes'
 set __fish_git_prompt_showupstream 'informative'
