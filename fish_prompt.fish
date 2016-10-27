@@ -3,11 +3,11 @@
 
 # Settings for Git Prompt
 set __fish_git_prompt_showdirtystate 'yes'
-set __fish_git_prompt_showupstream 'informative'
+set __fish_git_prompt_showupstream 'name'
 set __fish_git_prompt_color_dirtystate yellow
+set __fish_git_prompt_char_upstream_equal ''
 set __fish_git_prompt_char_upstream_ahead '↑'
 set __fish_git_prompt_char_upstream_behind '↓'
-#set __fish_git_prompt_char_upstream_diverged '↑↓'
 
 function _pwd_with_tilde
   echo (pwd | string replace $HOME '~')
@@ -73,7 +73,7 @@ function fish_prompt
 
   # If in git repo, show info about repo
   if _in_git_directory
-    _print_in_color (__fish_git_prompt) cyan
+    _print_in_color "\e[3m"(__fish_git_prompt)"\e[0m" cyan
   end
 
   # Show user@hostname if SSH'd in
