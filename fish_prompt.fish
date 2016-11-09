@@ -8,6 +8,7 @@ set __fish_git_prompt_color_dirtystate yellow
 set __fish_git_prompt_char_upstream_equal ''
 set __fish_git_prompt_char_upstream_ahead '↑'
 set __fish_git_prompt_char_upstream_behind '↓'
+set __fish_git_prompt_char_upstream_diverged '↑↓'
 
 function _pwd_with_tilde
   echo (pwd | string replace $HOME '~')
