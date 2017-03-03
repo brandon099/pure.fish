@@ -2,6 +2,7 @@
 # https://github.com/brandon099/pure.fish
 
 # Settings for Git Prompt
+set __fish_git_prompt_color cyan
 set __fish_git_prompt_showdirtystate 'yes'
 set __fish_git_prompt_showupstream 'name'
 set __fish_git_prompt_color_dirtystate yellow
@@ -74,7 +75,7 @@ function fish_prompt
 
   # If in git repo, show info about repo
   if _in_git_directory
-    _print_in_color "\e[3m"(__fish_git_prompt)"\e[0m" cyan
+    _print_in_color (__fish_git_prompt) cyan
   end
 
   # Show user@hostname if SSH'd in
