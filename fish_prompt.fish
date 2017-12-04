@@ -1,21 +1,8 @@
 # Source
 # https://github.com/brandon099/pure.fish
 
-# Settings for Git Prompt
-set __fish_git_prompt_showdirtystate 'yes'
-set __fish_git_prompt_showupstream 'name'
-set __fish_git_prompt_color_dirtystate yellow
-set __fish_git_prompt_char_upstream_equal ''
-set __fish_git_prompt_char_upstream_ahead '↑'
-set __fish_git_prompt_char_upstream_behind '↓'
-set __fish_git_prompt_char_upstream_diverged '↑↓'
-
 function _pwd_with_tilde
   echo (pwd | string replace $HOME '~')
-end
-
-function _prompt_hostname
-  echo $USER"@"(cat /etc/hostname 2>/dev/null; or hostname | cut -d . -f 1)
 end
 
 function _format_time -d "Format milliseconds to a human readable format"
@@ -50,6 +37,60 @@ function _in_git_directory
   git rev-parse --git-dir > /dev/null 2>&1
 end
 
+function _git_branch_name_or_revision
+  set -l branch (git symbolic-ref HEAD ^ /dev/null | sed -e 's|^refs/heads/||')
+  set -l revision (git rev-parse HEAD ^ /dev/null | cut -b 1-7)
+
+  if test (count $branch) -gt 0
+    echo $branch
+  else
+    echo $revision
+  end
+end
+
+function _git_upstream_configured
+  git rev-parse --abbrev-ref @"{u}" > /dev/null 2>&1
+end
+
+function _git_behind_upstream
+  test (git rev-list --right-only --count HEAD...@"{u}" ^ /dev/null) -gt 0
+end
+
+function _git_ahead_of_upstream
+  test (git rev-list --left-only --count HEAD...@"{u}" ^ /dev/null) -gt 0
+end
+
+function _git_dirty
+  set -l is_git_dirty (command git status --porcelain --ignore-submodules ^/dev/null)
+  test -n "$is_git_dirty"
+end
+
+function _git_upstream_status
+  set -l arrows
+
+  if _git_upstream_configured
+    if _git_behind_upstream
+      set arrows "$arrows⇣"
+    end
+
+    if _git_ahead_of_upstream
+      set arrows "$arrows⇡"
+    end
+  end
+
+  echo $arrows
+end
+
+function _git_status
+  set -l asterisk
+
+  if _git_dirty
+    set asterisk "$asterisk*"
+  end
+
+  echo $asterisk
+end
+
 function _print_in_color
   set -l string $argv[1]
   set -l color  $argv[2]
@@ -61,7 +102,7 @@ end
 
 function _prompt_color_for_status
   if test $argv[1] -eq 0
-    echo normal
+    echo magenta
   else
     echo red
   end
@@ -74,12 +115,14 @@ function fish_prompt
 
   # If in git repo, show info about repo
   if _in_git_directory
-    _print_in_color "\e[3m"(__fish_git_prompt)"\e[0m" cyan
+    _print_in_color " \e[3m"(_git_branch_name_or_revision)"\e[0m" brblack
+    _print_in_color (_git_status) yellow
+    _print_in_color " "(_git_upstream_status) cyan
   end
 
   # Show hostname if SSH'd in
   if set -q SSH_CONNECTION
-    _print_in_color " "(hostname) 65737E
+    _print_in_color " "(hostname) brblack
   end
 
   # Show process run time if longer than 5 seconds
@@ -91,7 +134,7 @@ function fish_prompt
 
   # Show prompt, with Python Virtualenv support
   if set -q VIRTUAL_ENV
-    _print_in_color "\n("(basename "$VIRTUAL_ENV")")" normal
+    _print_in_color "\n("(basename "$VIRTUAL_ENV")")" brblack
     _print_in_color "❯ " (_prompt_color_for_status $last_status)
   else
     _print_in_color "\n❯ " (_prompt_color_for_status $last_status)
