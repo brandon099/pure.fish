@@ -96,7 +96,7 @@ function _print_in_color
   set -l color  $argv[2]
 
   set_color $color
-  printf $string
+  printf "$string"
   set_color normal
 end
 
@@ -113,12 +113,6 @@ function fish_prompt
 
   _print_in_color "\n"(_pwd_with_tilde) blue
 
-  # If in git repo, show info about repo
-  if _in_git_directory
-    _print_in_color " \e[3m"(_git_branch_name_or_revision)"\e[0m" brblack
-    _print_in_color (_git_status) yellow
-    _print_in_color " "(_git_upstream_status) cyan
-  end
 
   # Show hostname if SSH'd in
   if set -q SSH_CONNECTION
@@ -132,12 +126,22 @@ function fish_prompt
     end
   end
 
-  # Show prompt, with Python Virtualenv support
+  # Show prompt
   if set -q VIRTUAL_ENV
-    _print_in_color "\n("(basename "$VIRTUAL_ENV")")" brblack
-    _print_in_color "❯ " (_prompt_color_for_status $last_status)
-  else
-    _print_in_color "\n❯ " (_prompt_color_for_status $last_status)
+    _print_in_color " ("(basename "$VIRTUAL_ENV")")" brblack
   end
+
+  if /bin/test $__kube_ps_enabled -eq 1
+    _print_in_color (__kube_prompt) brblack
+  end
+
+  # If in git repo, show info about repo
+  if _in_git_directory
+    _print_in_color " \e[3m"(_git_branch_name_or_revision)"\e[0m" brblack
+    _print_in_color (_git_status) yellow
+    _print_in_color " "(_git_upstream_status) cyan
+  end
+
+  _print_in_color "\n❯ " (_prompt_color_for_status $last_status)
 
 end
