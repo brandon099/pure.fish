@@ -126,16 +126,19 @@ function fish_prompt
     end
   end
 
-  # Show prompt
+  # Show Python virtual environment if enabled
   if set -q VIRTUAL_ENV
     _print_in_color " ("(basename "$VIRTUAL_ENV")")" brblack
   end
 
-  if /bin/test $__kube_ps_enabled -eq 1
-    _print_in_color (__kube_prompt) brblack
+  # Show Kubernetes context and namespace in prompt if enabled
+  if set -q __kube_ps_enabled
+    if test $__kube_ps_enabled -eq 1
+      _print_in_color (__kube_prompt) brblack
+    end
   end
 
-  # If in git repo, show info about repo
+  # Show Git repository information if in a repository
   if _in_git_directory
     _print_in_color " \e[3m"(_git_branch_name_or_revision)"\e[0m" brblack
     _print_in_color (_git_status) yellow
