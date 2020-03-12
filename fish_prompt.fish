@@ -1,9 +1,7 @@
 # Source
 # https://github.com/brandon099/pure.fish
 
-function _pwd_with_tilde
-  echo (pwd | string replace $HOME '~')
-end
+set fish_prompt_pwd_dir_length 0
 
 function _format_time -d "Format milliseconds to a human readable format"
   set -l milliseconds $argv[1]
@@ -111,7 +109,7 @@ end
 function fish_prompt
   set -l last_status $status
 
-  _print_in_color "\n"(_pwd_with_tilde) blue
+  _print_in_color "\n"(prompt_pwd) blue
 
 
   # Show hostname if SSH'd in
