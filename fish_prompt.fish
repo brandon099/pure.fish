@@ -114,7 +114,7 @@ function fish_prompt
 
   # Show hostname if SSH'd in
   if set -q SSH_CONNECTION
-    _print_in_color " "(hostname) brblack
+    _print_in_color " "(prompt_hostname) brblack
   end
 
   # Show process run time if longer than 5 seconds
